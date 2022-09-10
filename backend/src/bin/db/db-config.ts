@@ -7,6 +7,6 @@ import path from 'path';
 import { Config, ConfigName, DbConfig } from '@core/config';
 
 const rootDir = path.resolve(__dirname, '../../');
-const postgresConfig = <DbConfig>Config.getConfig(ConfigName.Db);
+const postgresConfig = Config.getConfig<DbConfig>(ConfigName.Db);
 
 fs.createWriteStream(`${rootDir}/ormconfig.json`).write(JSON.stringify(postgresConfig));

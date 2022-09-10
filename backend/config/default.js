@@ -52,6 +52,15 @@ module.exports = {
         maxQueryExecutionTime: Number(150),
         extra: { max: Number(200) },
     },
+    rabbitmq: {
+        hostname: 'localhost',
+        port: 5672,
+        username: 'guest',
+        vhost: '/',
+        protocol: 'amqp',
+        password: 'guest',
+        exchange: 'guest'
+    },
     log: {
         main: {
             type: 'console',

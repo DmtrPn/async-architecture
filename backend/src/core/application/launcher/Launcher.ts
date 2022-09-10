@@ -13,7 +13,7 @@ class Launcher {
 
     constructor(app: NestExpressApplication) {
         this.app = app;
-        this.config = <ServerConfig>Config.getConfig(ConfigName.Server);
+        this.config = Config.getConfig<ServerConfig>(ConfigName.Server);
     }
 
     public launch(): void {

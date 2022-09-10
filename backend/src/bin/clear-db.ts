@@ -5,7 +5,7 @@ import { Config, ConfigName, DbConfig } from '@core/config';
 import { DataSource } from 'typeorm';
 
 async function clearDb(): Promise<void> {
-    const { entities, ...dbConfig } = <DbConfig>Config.getConfig(ConfigName.Db);
+    const { entities, ...dbConfig } = Config.getConfig<DbConfig>(ConfigName.Db);
     const dataSource = new DataSource(dbConfig);
     await dataSource.initialize();
 

@@ -11,7 +11,7 @@ interface BackendGatewayParams extends BaseGatewayParams {
 export abstract class BackendGateway extends Gateway<BackendGatewayParams> {
     protected abstract serviceUrl: string;
     protected logger = LoggerFactory.getLogger();
-    protected configDic = <ServicesConfig>Config.getConfig(ConfigName.Services);
+    protected configDic = Config.getConfig<ServicesConfig>(ConfigName.Services);
 
     protected initBackendHttpClient(): BackendHttpClient {
         const baseURL: string | undefined = this.configDic[this.name];

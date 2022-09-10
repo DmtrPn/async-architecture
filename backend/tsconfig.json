@@ -25,7 +25,7 @@
       "@common/*": ["components/common/*"],
       "@components/*": ["components/*"],
       "@catalog/*": ["modules/catalog/*"],
-      "@user/*": ["modules/user/*"],
+      "@user/*": ["modules/user/*"]
     },
     "typeRoots": [
       "../node_modules/@types",

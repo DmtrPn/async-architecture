@@ -5,7 +5,7 @@ import { Request as ExpressRequest, Response, NextFunction } from 'express';
 import { redisSessionStore } from '@components/redis';
 import { Config, ConfigName, ServerConfig } from '@core/config';
 
-const serverConfig = <ServerConfig>Config.getConfig(ConfigName.Server);
+const serverConfig = Config.getConfig<ServerConfig>(ConfigName.Server);
 
 export const sessionConfig = {
     cookie: {

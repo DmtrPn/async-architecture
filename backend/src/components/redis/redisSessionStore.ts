@@ -5,7 +5,7 @@ import { Config, ConfigName, RedisConfig } from '@core/config';
 
 import { redisClient } from './redisClient';
 
-const redisConfig = <RedisConfig>Config.getConfig(ConfigName.Redis);
+const redisConfig = Config.getConfig<RedisConfig>(ConfigName.Redis);
 
 // @ts-ignore
 const RedisStore = connectRedis(session);

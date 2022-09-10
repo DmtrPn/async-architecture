@@ -7,6 +7,7 @@ export enum ConfigName {
     Log = 'log',
     Redis = 'redis',
     Db = 'db',
+    RabbitMQ = 'rabbitmq',
 }
 
 export interface ServerConfig {
@@ -37,8 +38,19 @@ export interface DbConfig extends PostgresConnectionOptions {
     password: string;
 }
 
+export interface RabbitMQConfig extends PostgresConnectionOptions {
+    hostname: string;
+    port: number;
+    username: string;
+    vhost: string;
+    protocol: string;
+    password: string;
+    exchange: string;
+}
+
 export type ConfigType =
     ServerConfig
     | ServicesConfig
     | RedisConfig
-    | DbConfig;
+    | DbConfig
+    | RabbitMQConfig;

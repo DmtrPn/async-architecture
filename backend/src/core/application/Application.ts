@@ -33,7 +33,7 @@ class Application {
     private dbConnector = DbConnector.getInstance();
 
     constructor() {
-        this.serverConfig = <ServerConfig>Config.getConfig(ConfigName.Server);
+        this.serverConfig = Config.getConfig<ServerConfig>(ConfigName.Server);
     }
 
     public async init(): Promise<void> {

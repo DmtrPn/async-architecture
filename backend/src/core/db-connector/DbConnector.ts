@@ -20,7 +20,7 @@ export class DbConnector {
     private dataSource: DataSource;
     private logger = LoggerFactory.getLogger();
 
-    private dbConfig: PostgresConnectionOptions = <DbConfig>Config.getConfig(ConfigName.Db);
+    private dbConfig: PostgresConnectionOptions = Config.getConfig<DbConfig>(ConfigName.Db);
 
     private constructor() {
         this.dataSource = new DataSource(this.dbConfig as PostgresConnectionOptions);
