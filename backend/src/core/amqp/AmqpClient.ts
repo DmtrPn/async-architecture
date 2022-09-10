@@ -43,7 +43,8 @@ export class AmqpClient {
         this.onMessageHandler = onMessage;
         try {
             await this.channel.assertQueue(queue, { durable: false });
-            await this.channel.consume(queue, (d) => this.onMessage(d));
+            // @ts-ignore
+            await this.channel.consume(queue, (d) => this.onMessage(d), { noAck: true, prefetch: 1 });
             this.logger.info('econsue', { queue });
         } catch (error) {
             this.logger.error('event sending error', { error, queue });
@@ -53,7 +54,8 @@ export class AmqpClient {
     public async sendToQueue(queue: string, data: object) {
         try {
             await this.channel.assertQueue(queue, { durable: false });
-            await this.channel.sendToQueue(queue, data);
+            // @ts-ignore
+            await this.channel.sendToQueue(queue, data, { persistent: true });
             this.logger.info('event has been sent', { queue, data });
         } catch (error) {
             this.logger.error('event sending error', { error, queue, data });
@@ -119,7 +121,7 @@ export class AmqpClient {
         const message = JSON.parse(data.content.toString());
         this.logger.info('receiver: got message', { message });
         this.onMessageHandler(message);
-        this.channel.ack(data);
+        // this.channel.ack(data);
     }
 
 }

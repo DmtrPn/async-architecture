@@ -6,7 +6,9 @@ async function doIt() {
     const amqp = new AmqpClient();
     await amqp.init();
 
-    await amqp.sendToQueue('hello', { msg: 'Hello World!' });
+    for (let i in [0, 1, 2, 3, 4, 5, 6, 7, 8]) {
+        await amqp.sendToQueue('hello', { msg: `${i} Hello World!` });
+    }
     await amqp.dispose();
 }
 
