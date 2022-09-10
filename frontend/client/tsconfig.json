@@ -1,0 +1,53 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "target": "es2017",
+    "jsx": "react",
+    "allowJs": true,
+    "module": "es6",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node",
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "outDir": "dist",
+    "rootDir": "./",
+    "sourceMap": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "esModuleInterop": true,
+    "useDefineForClassFields": true,
+    "skipDefaultLibCheck": true,
+    "skipLibCheck": true,
+    "lib": ["es6", "ES2019", "dom"],
+    "strictNullChecks": true,
+    "strict": true,
+    "inlineSources": true,
+    "sourceRoot": "/",
+    "typeRoots": [
+      "node_modules/@types",
+      "@types"
+    ],
+    "baseUrl": "./src",
+    "paths": {
+      "@facades": ["facades/"],
+      "@store": ["store/"],
+      "@store/*": ["store/*"],
+      "@core/*": ["core/*"],
+      "@api": ["api/"],
+      "@api/*": ["api/*"],
+      "@modules/*": ["modules/*"],
+      "@dream/*": ["modules/dream/*"],
+      "@components/*": ["components/*"],
+      "@common/*": ["modules/common/*"],
+      "@utils/*": ["utils/*"]
+    }
+  },
+  "exclude": [
+    "node_modules",
+    "dist",
+    "src/**/*.scss.d.ts"
+  ]
+}
