@@ -59,7 +59,7 @@ module.exports = {
         vhost: '/',
         protocol: 'amqp',
         password: 'guest',
-        exchange: 'guest'
+        exchange: 'example'
     },
     log: {
         main: {

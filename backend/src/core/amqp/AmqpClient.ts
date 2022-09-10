@@ -7,26 +7,31 @@ import { LoggerFactory } from '@components/logging';
 import { isDefined } from '@utils/isDefined';
 
 export interface AmqpMetadata {
-    eventId: string; // uuid,
-    version: string; // 'v1',
-    topic: string; //  'encounter-stream.encounter-created',
-    eventName: string; // 'encounter-created',
-    producer: string; // 'iskra',
-    producedAt: Date; // ISO
+    eventId?: string; // uuid,
+    version?: string; // 'v1',
+    topic?: string; //  'encounter-stream.encounter-created',
+    eventName?: string; // 'encounter-created',
+    producer?: string; // 'iskra',
+    producedAt?: Date; // ISO
     queue?: string;
+    data: object;
 }
 
-export class AmqpClient {
+export interface InitData {
+    exchange?: string;
+}
 
-    private logger = LoggerFactory.getLogger();
-    private channel!: ChannelWrapper;
+export abstract class AmqpClient<D extends InitData = {}> {
+
+    protected channel!: ChannelWrapper;
+    protected logger = LoggerFactory.getLogger();
     private connectionManager!: IAmqpConnectionManager;
     private isConnectionCancelled  = false;
+    private exchange_?: string;
     private config: RabbitMQConfig = Config.getConfig<RabbitMQConfig>(ConfigName.RabbitMQ);
-    private onMessageHandler;
 
     public get exchange(): string {
-        return this.config.exchange;
+        return this.exchange_ ?? this.config.exchange;
     }
 
     public get url() {
@@ -34,44 +39,10 @@ export class AmqpClient {
         return `${protocol}://${username}:${password}@${hostname}${vhost}`;
     }
 
-    public async init(): Promise<void> {
-        this.connect();
-        this.initChannel();
-    }
-
-    public async consume(queue: string, onMessage: (msg: amqplib.ConsumeMessage) => void) {
-        this.onMessageHandler = onMessage;
-        try {
-            await this.channel.assertQueue(queue, { durable: false });
-            // @ts-ignore
-            await this.channel.consume(queue, (d) => this.onMessage(d), { noAck: true, prefetch: 1 });
-            this.logger.info('econsue', { queue });
-        } catch (error) {
-            this.logger.error('event sending error', { error, queue });
-        }
-    }
-
-    public async sendToQueue(queue: string, data: object) {
-        try {
-            await this.channel.assertQueue(queue, { durable: false });
-            // @ts-ignore
-            await this.channel.sendToQueue(queue, data, { persistent: true });
-            this.logger.info('event has been sent', { queue, data });
-        } catch (error) {
-            this.logger.error('event sending error', { error, queue, data });
-        }
-    }
-
-    public async send<T extends AmqpMetadata>(event: T) {
-        const { eventId, topic } = event;
-
-        try {
-            await this.channel.publish(this.exchange, topic, event);
-
-            this.logger.info('event has been sent', { eventId, topic });
-        } catch (error) {
-            this.logger.error('event sending error', { error, eventId, topic });
-        }
+    public async init(data: D = {} as D): Promise<void> {
+        this.initData(data);
+        this.connect(data);
+        this.initChannel(data);
     }
 
     public async dispose(): Promise<void> {
@@ -84,7 +55,13 @@ export class AmqpClient {
         await this.connectionManager.close();
     }
 
-    protected connect(): void {
+    protected abstract setupFunction(channel: amqplib.ConfirmChannel, data: D): void;
+
+    protected initData(data: D): void {
+        this.exchange_ = data.exchange;
+    }
+
+    private connect(data: D): void {
         this.connectionManager = amqp.connect(this.url);
 
         this.connectionManager.on('connectFailed', cause => {
@@ -95,16 +72,16 @@ export class AmqpClient {
             this.logger.info('rabbitmq connection has been created');
 
             if (!this.isConnectionCancelled) {
-                this.initChannel();
+                this.initChannel(data);
             }
         });
     }
 
-    protected initChannel(): void {
+    private initChannel(data: D): void {
         if (!isDefined(this.channel)) {
             this.channel = this.connectionManager.createChannel({
-                confirm: true,
                 json: true,
+                setup: channel => this.setupFunction(channel, data),
             });
 
             this.channel.on('error', error => {
@@ -115,13 +92,6 @@ export class AmqpClient {
                 this.logger.info('rabbitmq channel has been created');
             });
         }
-    }
-
-    private onMessage(data: amqplib.ConsumeMessage) {
-        const message = JSON.parse(data.content.toString());
-        this.logger.info('receiver: got message', { message });
-        this.onMessageHandler(message);
-        // this.channel.ack(data);
     }
 
 }

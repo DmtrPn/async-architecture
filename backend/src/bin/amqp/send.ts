@@ -1,9 +1,9 @@
 import '../../bootstrap';
 
-import { AmqpClient } from '@core/amqp/AmqpClient';
+import { AmqpSimpleClient } from '@core/amqp/AmqpSimpleClient';
 
 async function doIt() {
-    const amqp = new AmqpClient();
+    const amqp = new AmqpSimpleClient();
     await amqp.init();
 
     for (let i in [0, 1, 2, 3, 4, 5, 6, 7, 8]) {
