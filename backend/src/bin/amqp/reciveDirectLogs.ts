@@ -7,7 +7,11 @@ function onMessage(data: object): void {
 }
 
 async function doIt() {
-    const amqp = new AmqpConsumerClient({ onMessage, exchange: 'direct_logs' });
+    const amqp = new AmqpConsumerClient({
+        onMessage,
+        exchange: 'direct_logs',
+        pattern: process.argv.slice(2),
+    });
     await amqp.init({ exclusive: true });
 }
 

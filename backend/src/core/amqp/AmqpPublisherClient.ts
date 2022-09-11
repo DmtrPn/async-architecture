@@ -1,28 +1,38 @@
 import type * as amqplib from 'amqplib';
 
-import { AmqpClient, AmqpMetadata, InitData } from './AmqpClient';
+import { AmqpClient, AmqpMetadata, AmqpClientParams } from './AmqpClient';
 
-interface PublisherInitData extends InitData {
-    type?: string;
+interface PublisherParams extends AmqpClientParams {
+    type: ExchangeType;
 }
 
-export class AmqpPublisherClient extends AmqpClient<PublisherInitData> {
+type ExchangeType = 'direct' | 'topic' | 'headers' | 'fanout' | 'match';
+
+export class AmqpPublisherClient extends AmqpClient {
+
+    private type: ExchangeType;
+
+    constructor(params: PublisherParams) {
+        super(params);
+
+        this.type = params.type;
+    }
 
     public async send<T extends AmqpMetadata>(event: T) {
-        const { topic = '', data } = event;
+        const { routingKey = '', data } = event;
 
         try {
             // @ts-ignore
-            await this.channel.publish(this.exchange, topic, data, { persistent: true });
+            await this.channel.publish(this.exchange, routingKey, data, { persistent: true });
 
-            this.logger.info('event has been sent', { topic });
+            this.logger.info('event has been sent', { routingKey });
         } catch (error) {
-            this.logger.error('event sending error', { error, topic });
+            this.logger.error('event sending error', { error, routingKey });
         }
     }
 
-    protected async setupFunction(channel: amqplib.ConfirmChannel, { type = 'fanout' }: PublisherInitData): Promise<void> {
-        return channel.assertExchange(this.exchange, type);
+    protected async setupFunction(channel: amqplib.ConfirmChannel): Promise<void> {
+        return channel.assertExchange(this.exchange, this.type);
 
     }
 }

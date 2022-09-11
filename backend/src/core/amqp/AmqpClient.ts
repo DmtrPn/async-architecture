@@ -9,7 +9,7 @@ import { isDefined } from '@utils/isDefined';
 export interface AmqpMetadata {
     eventId?: string; // uuid,
     version?: string; // 'v1',
-    topic?: string; //  'encounter-stream.encounter-created',
+    routingKey?: string; //  'encounter-stream.encounter-created',
     eventName?: string; // 'encounter-created',
     producer?: string; // 'iskra',
     producedAt?: Date; // ISO
@@ -17,21 +17,28 @@ export interface AmqpMetadata {
     data: object;
 }
 
-export interface InitData {
+export interface AmqpClientParams {
     exchange?: string;
+    type?: ExchangeType;
 }
 
-export abstract class AmqpClient<D extends InitData = {}> {
+export type ExchangeType = 'direct' | 'topic' | 'headers' | 'fanout' | 'match';
+
+export abstract class AmqpClient<D = null> {
 
     protected channel!: ChannelWrapper;
     protected logger = LoggerFactory.getLogger();
     private connectionManager!: IAmqpConnectionManager;
     private isConnectionCancelled  = false;
-    private exchange_?: string;
+    private exchange_: string;
     private config: RabbitMQConfig = Config.getConfig<RabbitMQConfig>(ConfigName.RabbitMQ);
 
+    constructor(params: AmqpClientParams) {
+        this.exchange_ = params.exchange ?? this.config.exchange;
+    }
+
     public get exchange(): string {
-        return this.exchange_ ?? this.config.exchange;
+        return this.exchange_;
     }
 
     public get url() {
@@ -57,8 +64,7 @@ export abstract class AmqpClient<D extends InitData = {}> {
 
     protected abstract setupFunction(channel: amqplib.ConfirmChannel, data: D): void;
 
-    protected initData(data: D): void {
-        this.exchange_ = data.exchange;
+    protected initData(_: D): void {
     }
 
     private connect(data: D): void {

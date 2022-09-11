@@ -1,22 +1,30 @@
 import type * as amqplib from 'amqplib';
 import autobind from 'autobind';
+import castArray from 'lodash/castArray';
 
-import { AmqpClient, InitData } from './AmqpClient';
+import { AmqpClient, AmqpClientParams } from './AmqpClient';
 
-interface ConsumerInitData extends InitData {
-    type?: string;
-    queue?: string;
+interface ConsumerInitData {
     exclusive?: boolean;
+}
+interface ConsumerParams extends AmqpClientParams {
+    queue?: string;
+    pattern?: string | string[];
     onMessage(msg: amqplib.ConsumeMessage): void;
 }
 
-export class AmqpPublisherClient extends AmqpClient<ConsumerInitData> {
+export class AmqpConsumerClient extends AmqpClient<ConsumerInitData> {
 
+    private queue: string;
+    private patterns: string[];
     private onMessage_: (msg: amqplib.ConsumeMessage) => void;
 
-    protected override initData(data: ConsumerInitData) {
-        super.initData(data);
-        this.onMessage_ = data.onMessage;
+    constructor(params: ConsumerParams) {
+        super(params);
+
+        this.queue = params.queue ?? '';
+        this.onMessage_ = params.onMessage;
+        this.patterns = castArray(params.pattern ?? '#');
     }
 
     /* eslint-disable @typescript-eslint/indent */
@@ -24,7 +32,7 @@ export class AmqpPublisherClient extends AmqpClient<ConsumerInitData> {
         channel: amqplib.ConfirmChannel,
         data: ConsumerInitData,
     ): Promise<void> {
-        return data.exclusive ? this.setupExclusive(channel, data) : this.setupChannel(channel, data);
+        return data.exclusive ? this.setupExclusive(channel, data) : this.setupChannel(channel);
     }
 
     @autobind
@@ -39,7 +47,7 @@ export class AmqpPublisherClient extends AmqpClient<ConsumerInitData> {
         const qok = await channel.assertQueue('', { exclusive: true, autoDelete: true });
         const queueName = qok.queue;
         await channel.prefetch(1);
-        await channel.bindQueue(queueName, this.exchange, '#');
+        await this.bindQueue(channel, queueName);
 
         await channel.consume(
             queueName,
@@ -48,13 +56,16 @@ export class AmqpPublisherClient extends AmqpClient<ConsumerInitData> {
         );
     }
 
-    private async setupChannel(channel: amqplib.ConfirmChannel, { queue = '' }: ConsumerInitData): Promise<void> {
+    private async setupChannel(channel: amqplib.ConfirmChannel): Promise<void> {
         await Promise.all([
-            channel.assertQueue(queue, { exclusive: true, autoDelete: true }),
+            channel.assertQueue(this.queue, { exclusive: true, autoDelete: true }),
             channel.prefetch(1),
-            channel.bindQueue(queue, this.exchange, '#'),
-            channel.consume(queue, this.onMessage, { noAck: false }),
+            this.bindQueue(channel, this.queue),
+            channel.consume(this.queue, this.onMessage, { noAck: false }),
         ]);
+    }
 
+    private async bindQueue(channel: amqplib.ConfirmChannel, queue: string): Promise<void> {
+        await Promise.all(this.patterns.map(parrern => channel.bindQueue(queue, this.exchange, parrern)));
     }
 }

@@ -68,7 +68,7 @@ export class AmqpSimpleClient {
     public async consumeExclusiveExchange(onMessage: (msg: amqplib.ConsumeMessage) => void) {
         this.onMessageHandler = onMessage;
         try {
-            await this.channel.assertExchange(this.exchange, 'fanout', { durable: false });
+            await this.channel.assertExchange(this.exchange, 'fanout', { durable: true });
             const q = await this.channel.assertQueue('home', { exclusive: true, autoDelete: true });
             console.log('[*] Waiting for messages in %s. To exit press CTRL+C', q.queue);
             await this.channel.bindQueue('home', this.exchange, '');
@@ -84,7 +84,7 @@ export class AmqpSimpleClient {
         const { topic = '', data } = event;
 
         try {
-            await this.channel.assertExchange(this.exchange, 'fanout', { durable: false });
+            await this.channel.assertExchange(this.exchange, 'fanout', { durable: true });
             await this.channel.publish(this.exchange, topic, data);
 
             this.logger.info('event has been sent', { topic });
