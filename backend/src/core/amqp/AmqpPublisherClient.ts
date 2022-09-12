@@ -10,7 +10,7 @@ type ExchangeType = 'direct' | 'topic' | 'headers' | 'fanout' | 'match';
 
 export class AmqpPublisherClient extends AmqpClient {
 
-    private type: ExchangeType;
+    private readonly type: ExchangeType;
 
     constructor(params: PublisherParams) {
         super(params);

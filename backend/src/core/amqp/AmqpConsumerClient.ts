@@ -15,9 +15,9 @@ interface ConsumerParams extends AmqpClientParams {
 
 export class AmqpConsumerClient extends AmqpClient<ConsumerInitData> {
 
-    private queue: string;
-    private patterns: string[];
-    private onMessage_: (msg: amqplib.ConsumeMessage) => void;
+    private readonly queue: string;
+    private readonly patterns: string[];
+    private readonly onMessage_: (msg: amqplib.ConsumeMessage) => void;
 
     constructor(params: ConsumerParams) {
         super(params);
