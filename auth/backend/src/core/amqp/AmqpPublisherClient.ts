@@ -33,5 +33,6 @@ export class AmqpPublisherClient extends AmqpClient {
 
     protected async setupFunction(channel: amqplib.ConfirmChannel): Promise<void> {
         return channel.assertExchange(this.exchange, this.type);
+
     }
 }
