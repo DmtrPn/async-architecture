@@ -4,13 +4,11 @@ import { PassportModule } from '@nestjs/passport';
 import { middlewares } from '@components/middlewares';
 import { LocalStrategy, SessionSerializer } from '@components/auth/local';
 
-import { CatalogModule } from '@catalog/CatalogModule';
 import { UserModule } from '@user/UserModule';
 
 @Module({
     imports: [
         PassportModule.register({ session: true, defaultStrategy: 'local' }),
-        CatalogModule,
         UserModule,
     ],
     providers: [LocalStrategy, SessionSerializer],

@@ -1,7 +1,8 @@
 {
   "packages": [
-    "frontend",
-    "backend",
+    "auth/*",
+    "frontend/*",
+    "task/*",
     "types"
   ],
   "npmClient": "yarn",

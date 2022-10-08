@@ -1,6 +1,4 @@
 export const enum MovieStatus {
-    New = 'new',
-    Rejected = 'rejected',
 }
 
 export const enum UserStatus {
@@ -15,7 +13,4 @@ export const enum RoleName {
 }
 
 export const enum EntityName {
-    Movie = 'movie',
-    MovieRating = 'movieRating',
-    Affirmation = 'affirmation',
 }
