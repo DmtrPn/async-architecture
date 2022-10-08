@@ -46,7 +46,6 @@
     "ioredis": "4.17.3",
     "lodash": "4.17.21",
     "log4js": "6.4.4",
-    "nestjs-telegraf": "2.4.1",
     "passport": "0.5.2",
     "passport-local": "1.0.0",
     "password-crygen": "1.0.0",
