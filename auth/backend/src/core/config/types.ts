@@ -8,6 +8,7 @@ export enum ConfigName {
     Redis = 'redis',
     Db = 'db',
     RabbitMQ = 'rabbitmq',
+    JWT = 'jwt',
 }
 
 export interface ServerConfig {
@@ -16,6 +17,10 @@ export interface ServerConfig {
     port: number;
     workers?: number;
     cookieSecret?: string;
+}
+
+export interface JWTConfig {
+    secret: string;
 }
 
 export interface ServicesConfig {

@@ -13,6 +13,7 @@ const {
     DB_NAME,
     DB_USERNAME,
     DB_PASSWORD,
+    JWT_SECRET,
 } = process.env;
 
 const { servicesDir } = require('./dirs.js');
@@ -59,6 +60,9 @@ module.exports = {
         protocol: 'amqp',
         password: 'guest',
         exchange: 'example'
+    },
+    jwt: {
+        secret: JWT_SECRET || 'top_secret',
     },
     log: {
         main: {
