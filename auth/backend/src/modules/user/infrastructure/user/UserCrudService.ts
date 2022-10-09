@@ -36,7 +36,7 @@ export class UserCrudService extends TransactionManager implements IUserCrudServ
         );
     }
 
-    public async update(id: string, params: Attributes<UserModel>): Promise<void> {
+    public async update(id: number, params: Attributes<UserModel>): Promise<void> {
         await this.manager.transaction(entityManager =>
             entityManager
                 .createQueryBuilder()
@@ -47,7 +47,7 @@ export class UserCrudService extends TransactionManager implements IUserCrudServ
         );
     }
 
-    public async remove(id: string): Promise<void> {
+    public async remove(id: number): Promise<void> {
         await this.manager.delete(UserModel, { id });
     }
 
