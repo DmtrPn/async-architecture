@@ -1,29 +1,39 @@
-import type * as amqplib from 'amqplib';
+import { AmqpClient, AmqpMetadata } from './AmqpClient';
 
-import { AmqpClient, AmqpMetadata, AmqpClientParams } from './AmqpClient';
-
-interface PublisherParams extends AmqpClientParams {
-    type: ExchangeType;
+export const enum Exchange {
+    UserStream = 'user-stream',
+    User = 'user',
 }
 
-type ExchangeType = 'direct' | 'topic' | 'headers' | 'fanout' | 'match';
+export const enum EventName {
+    UserCreated = 'UserCreated',
+}
 
 export class AmqpPublisherClient extends AmqpClient {
 
-    private readonly type: ExchangeType;
+    private static instance: AmqpPublisherClient;
+    public static getInstance(): AmqpPublisherClient {
+        if (!this.instance) {
+            this.instance = new AmqpPublisherClient();
+        }
 
-    constructor(params: PublisherParams) {
-        super(params);
+        return this.instance;
+    }
 
-        this.type = params.type;
+    private exchanges: Exchange[] = [Exchange.UserStream, Exchange.User];
+    private routing: { [key: string]: [Exchange, string] } = {
+        [EventName.UserCreated]: [Exchange.UserStream, `${Exchange.UserStream}.user-created.#`],
+    };
+
+    private constructor() {
+        super();
     }
 
     public async send<T extends AmqpMetadata>(event: T) {
-        const { routingKey = '', data } = event;
+        const [exchange, routingKey] = this.routing[event.eventName]!;
 
         try {
-            // @ts-ignore
-            await this.channel.publish(this.exchange, routingKey, data, { persistent: true });
+            this.channel.publish(exchange, routingKey, this.serializeEvent(event), { persistent: true });
 
             this.logger.info('event has been sent', { routingKey });
         } catch (error) {
@@ -31,7 +41,12 @@ export class AmqpPublisherClient extends AmqpClient {
         }
     }
 
-    protected async setupFunction(channel: amqplib.ConfirmChannel): Promise<void> {
-        return channel.assertExchange(this.exchange, this.type);
+    protected async initOther(): Promise<void> {
+        await this.assertExchanges();
     }
+
+    private async assertExchanges(): Promise<void> {
+        await Promise.all(this.exchanges.map(it => this.channel.assertExchange(it, 'topic')));
+    }
+
 }
