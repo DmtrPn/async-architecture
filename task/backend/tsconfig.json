@@ -24,7 +24,7 @@
       "@utils/*": ["core/utils/*"],
       "@common/*": ["components/common/*"],
       "@components/*": ["components/*"],
-      "@user/*": ["modules/catalog/*"],
+      "@user/*": ["modules/user/*"],
       "@task/*": ["modules/task/*"]
     },
     "typeRoots": [

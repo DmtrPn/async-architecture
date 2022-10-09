@@ -1,6 +1,6 @@
 import { v4 as uuid } from 'uuid';
 
-import { Exchange, UserEventName } from 'aa-types/events';
+import { Exchange, UserEvent } from 'aa-types/events';
 
 import { AmqpClient, AmqpMetadata } from './AmqpClient';
 
@@ -21,8 +21,8 @@ export class AmqpPublisherClient extends AmqpClient {
 
     private exchanges: Exchange[] = [Exchange.User, Exchange.UserStream];
     private routing: { [key: string]: [Exchange, string] } = {
-        [UserEventName.UserCreated]: makeRoutingPrams(Exchange.UserStream, 'user-created'),
-        [UserEventName.UserUpdated]: makeRoutingPrams(Exchange.UserStream, 'user-updated'),
+        [UserEvent.Created]: makeRoutingPrams(Exchange.UserStream, 'user-created'),
+        [UserEvent.Updated]: makeRoutingPrams(Exchange.UserStream, 'user-updated'),
     };
 
     private constructor() {
