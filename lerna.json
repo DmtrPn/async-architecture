@@ -2,6 +2,7 @@
   "packages": [
     "auth/*",
     "frontend/*",
+    "backend",
     "task/*",
     "types"
   ],

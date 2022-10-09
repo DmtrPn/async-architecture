@@ -5,6 +5,7 @@
   "workspaces": [
     "auth/*",
     "frontend/*",
+    "backend",
     "task/*",
     "types"
   ],
