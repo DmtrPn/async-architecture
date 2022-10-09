@@ -1,10 +1,16 @@
 import type * as amqplib from 'amqplib';
 import autobind from 'autobind';
 
+import { Exchange } from 'aa-types/events';
+
+import { UserEventListener } from '@user/application/event-listener/UserEventListener';
 import { AmqpClient } from './AmqpClient';
-import { Exchange } from '@core/amqp/AmqpPublisherClient';
 
 interface ConsumerInitData {
+}
+
+function makeRoutingPrams(exchange: Exchange, queue: string):  [Exchange, string] {
+    return [exchange, `${exchange}.${queue}.task`];
 }
 
 export class AmqpConsumerClient extends AmqpClient<ConsumerInitData> {
@@ -19,10 +25,11 @@ export class AmqpConsumerClient extends AmqpClient<ConsumerInitData> {
         return this.instance;
     }
 
-    private readonly onMessage_: (msg: object) => void;
+    private readonly onMessage_ = UserEventListener.onMessage;
 
     private readonly routing: [Exchange, string][] = [
-        [Exchange.UserStream, `${Exchange.UserStream}.user-created.backend`],
+        makeRoutingPrams(Exchange.UserStream, 'user-created'),
+        makeRoutingPrams(Exchange.UserStream, 'user-updated'),
     ];
 
     private constructor() {
