@@ -1,3 +1,5 @@
+import { UserEventName } from 'aa-types/events';
+
 import { UserStatus } from '@common/enums';
 import { RoleName } from '@core/access-control/types';
 
@@ -14,7 +16,17 @@ interface Params {
 
 export class CreateUserCommand extends UserCommand<Params> {
 
-    public async run(): Promise<void> {
+    public async execute(): Promise<void> {
         await this.userCrudService.create(this.params);
+        await this.publishCreateEvent();
+    }
+
+    private async publishCreateEvent(): Promise<void> {
+        const user = await this.userCrudService.getByPublicId(this.params.publicId);
+        this.eventPublisher.send({
+            eventName: UserEventName.UserCreated,
+            producedAt: new Date(),
+            data: user,
+        });
     }
 }
