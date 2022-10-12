@@ -12,5 +12,7 @@ export const enum RoleName {
     User = 'user',
 }
 
-export const enum EntityName {
+export const enum TaskStatus {
+    Open = 'open',
+    Executed = 'executed',
 }

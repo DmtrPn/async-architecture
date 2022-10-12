@@ -1,9 +1,11 @@
+import { v4 as uuid } from 'uuid';
+
+import { Exchange, UserEvent } from 'aa-types/events';
+
 import { AmqpClient, AmqpMetadata } from './AmqpClient';
 
-export const enum Exchange {
-}
-
-export const enum EventName {
+function makeRoutingPrams(exchange: Exchange, queue: string):  [Exchange, string] {
+    return [exchange, `${exchange}.${queue}.#`];
 }
 
 export class AmqpPublisherClient extends AmqpClient {
@@ -17,19 +19,22 @@ export class AmqpPublisherClient extends AmqpClient {
         return this.instance;
     }
 
-    private exchanges: Exchange[] = [];
+    private exchanges: Exchange[] = [Exchange.User, Exchange.UserStream];
     private routing: { [key: string]: [Exchange, string] } = {
+        [UserEvent.Created]: makeRoutingPrams(Exchange.UserStream, 'user-created'),
+        [UserEvent.Updated]: makeRoutingPrams(Exchange.UserStream, 'user-updated'),
     };
 
     private constructor() {
         super();
     }
 
-    public async send<T extends AmqpMetadata>(event: T) {
+    public send<T extends Omit<AmqpMetadata, 'eventId'>>(event: T): void {
         const [exchange, routingKey] = this.routing[event.eventName]!;
+        const witId = { ...event, eventId: uuid() };
 
         try {
-            this.channel.publish(exchange, routingKey, this.serializeEvent(event), { persistent: true });
+            this.channel.publish(exchange, routingKey, this.serializeEvent(witId), { persistent: true });
 
             this.logger.info('event has been sent', { routingKey });
         } catch (error) {

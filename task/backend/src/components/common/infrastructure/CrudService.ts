@@ -1,6 +1,6 @@
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 
-import { Class, Attributes } from 'project-types/common';
+import { Class, Attributes } from 'aa-types/common';
 
 import { TransactionManager } from '@common/infrastructure/TransactionManager';
 import { FindCommand } from '@common/infrastructure/FindCommand';
@@ -33,7 +33,7 @@ export abstract class CrudService<
         );
     }
 
-    public async update(id: string, params: UpdateParams): Promise<void> {
+    public async update(id: string | number, params: UpdateParams): Promise<void> {
         await this.executeInTransaction(entityManager =>
             entityManager
                 .createQueryBuilder()

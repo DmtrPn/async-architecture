@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Req, Res, Body } from '@nestjs/common';
+import { Controller, Get, Post, Put, Req, Res, Param, Body, Query } from '@nestjs/common';
 import { ApiTags, ApiOkResponse } from '@nestjs/swagger';
 import { Inject } from 'typescript-ioc';
 
@@ -6,15 +6,15 @@ import { LoginForm } from 'aa-types/backend';
 
 import { Public } from '@components/decorators';
 import { LoginUserCommand } from '@user/use-cases/auth';
-import { IUserCrudService } from '@user/domain/user/IUserCrudService';
 
 import { AuthUserResponse } from './responces/AuthUserResponse';
+import { IJWTTokenService } from '@user/domain/auth/IJWTTokenService';
 
 @ApiTags('Авторизация')
 @Controller('auth')
 export class AuthController {
 
-    @Inject private userCrudService: IUserCrudService;
+    @Inject private tokenService: IJWTTokenService;
 
     @Public()
     @ApiOkResponse({ type: AuthUserResponse })
@@ -23,14 +23,27 @@ export class AuthController {
         @Req() request,
         @Res() response,
         @Body() { user: loginData }: LoginForm,
-    ): Promise<AuthUserResponse | any> {
+    ): Promise<{ token: string } | any> {
         await new LoginUserCommand(loginData).execute();
 
-        const { password, roles, entities, ...user } = await this.userCrudService.getByEmail(loginData.email);
+        const token = await this.tokenService.create(loginData.email);
 
-        request.login(user, (err, req_) => err
+        request.login(token, (err, req_) => err
             ? response.status(401).send('<h1>Login Failure</h1>')
-            : response.status(200).send({ user }));
+            : response.status(200).send({ token }));
+    }
+
+    @Public()
+    @ApiOkResponse({ type: AuthUserResponse })
+    @Get('/user/:token')
+    public async getUserByToken(
+        @Req() req,
+        @Param('token') token: string,
+        // Query - bad place for secret
+        @Query('secret') secret: string,
+    ): Promise<AuthUserResponse> {
+        const user = await this.tokenService.decode(token, secret);
+        return { user };
     }
 
     @Public()
@@ -39,6 +52,7 @@ export class AuthController {
     public async getAuthorizedUser(
         @Req() req,
     ): Promise<AuthUserResponse> {
+
         return { user: req.user };
     }
 
