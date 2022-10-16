@@ -1,9 +1,9 @@
 {
   "packages": [
-    "audit-service/*",
+    "audit-service",
     "auth-service/*",
     "backend",
-    "billing-service/*",
+    "billing-service",
     "frontend/*",
     "packages/*",
     "task-service/*",

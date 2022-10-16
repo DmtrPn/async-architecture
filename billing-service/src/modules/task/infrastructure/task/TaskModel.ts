@@ -13,7 +13,10 @@ export class TaskModel extends BaseModel<TaskModel> {
     public publicId: string;
 
     @Column()
-    public description: string;
+    public takePrice: number;
+
+    @Column()
+    public executePrice: number;
 
     @Column()
     public authorId: number;

@@ -10,10 +10,14 @@ export const enum UserEvent {
     Updated = 'Updated',
 }
 
-
 export const enum TaskEvent {
-    Created = 'TaskCreated',
-    Updated = 'TaskUpdated',
-    Assigned = 'TaskAssigned',
-    Executed = 'TaskExecuted',
+    Created = 'Created',
+    Updated = 'Updated',
+    Assigned = 'Assigned',
+    Executed = 'Executed',
+}
+
+export const enum TransactionEvent {
+    Executed = 'Executed',
+    // Executed = 'Executed',
 }

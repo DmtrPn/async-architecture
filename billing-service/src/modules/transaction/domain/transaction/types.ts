@@ -6,11 +6,9 @@ export interface TransactionFindOptions extends BaseFindOptions {
 
 export interface TransactionCreateData {
     id: string;
-    link: string;
-    name: string;
-    authorId: string;
-    description?: string;
-    rating?: number;
+    accountId: number;
+    amount: number;
+    createdAt: Date;
 }
 
 export interface TransactionUpdateData {

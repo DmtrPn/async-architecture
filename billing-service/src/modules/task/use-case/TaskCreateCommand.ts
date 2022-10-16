@@ -1,4 +1,5 @@
-import { TaskEvent } from 'aa-types/events';
+import { TaskEvent, TransactionEvent } from 'aa-types/events';
+import { EventSchemaRegistry } from '@aa/event-schema-registry';
 
 import { TaskCommand } from './TaskCommand';
 
@@ -11,16 +12,24 @@ interface Params {
 export class TaskCreateCommand extends TaskCommand<Params> {
 
     public async run(): Promise<void> {
-        const { id: executorId } = await this.getRandomExecutor();
-        await this.crudService.create({ executorId, ...this.params });
+        // Создание таска (с ценой взятия и результата)
+        // Взятие денег с исполнителя
     }
 
     protected override async publishEvents(): Promise<void> {
         const task = await this.crudService.getByPublicId(this.params.publicId);
-        this.eventPublisher.send({
+        const event = {
             eventName: TaskEvent.Created,
             producedAt: new Date(),
             data: task,
-        });
+        };
+
+        if (EventSchemaRegistry.isValid(event)) {
+            this.eventPublisher.send({
+                eventName: TransactionEvent.Executed,
+                producedAt: new Date(),
+                data: task,
+            });
+        }
     }
 }
