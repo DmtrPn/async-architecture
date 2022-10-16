@@ -1,9 +1,12 @@
 {
   "packages": [
-    "auth/*",
-    "frontend/*",
+    "audit-service/*",
+    "auth-service/*",
     "backend",
-    "task/*",
+    "billing-service/*",
+    "frontend/*",
+    "packages/*",
+    "task-service/*",
     "types"
   ],
   "npmClient": "yarn",

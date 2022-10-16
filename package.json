@@ -3,10 +3,13 @@
   "private": true,
   "version": "1.0.0",
   "workspaces": [
-    "auth/*",
-    "frontend/*",
+    "audit-service/*",
+    "auth-service/*",
     "backend",
-    "task/*",
+    "billing-service/*",
+    "frontend/*",
+    "packages/*",
+    "task-service/*",
     "types"
   ],
   "devDependencies": {

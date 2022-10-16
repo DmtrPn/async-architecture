@@ -1,0 +1,22 @@
+import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
+import { PassportModule } from '@nestjs/passport';
+
+import { middlewares } from '@components/middlewares';
+import { LocalStrategy, SessionSerializer } from '@components/auth/local';
+
+import { CatalogModule } from '@catalog/CatalogModule';
+import { UserModule } from './modules/audit-log/UserModule';
+
+@Module({
+    imports: [
+        PassportModule.register({ session: true, defaultStrategy: 'local' }),
+        CatalogModule,
+        UserModule,
+    ],
+    providers: [LocalStrategy, SessionSerializer],
+})
+export class AppModule implements NestModule {
+    public configure(consumer: MiddlewareConsumer) {
+        consumer.apply(...middlewares).forRoutes('*');
+    }
+}
