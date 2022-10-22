@@ -9,9 +9,12 @@ export class TransactionModel extends BaseModel<TransactionModel> {
     public id: string;
 
     @Column()
-    public accountId: string;
+    public accountId: number;
 
     @Column({ type: 'int' })
     public amount: number;
+
+    @Column()
+    public createdAt: Date;
 
 }
