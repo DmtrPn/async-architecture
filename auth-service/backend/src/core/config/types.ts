@@ -43,7 +43,7 @@ export interface DbConfig extends PostgresConnectionOptions {
     password: string;
 }
 
-export interface RabbitMQConfig extends PostgresConnectionOptions {
+export interface RabbitMQConfig {
     hostname: string;
     port: number;
     username: string;

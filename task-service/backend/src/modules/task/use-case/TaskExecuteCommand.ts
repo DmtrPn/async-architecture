@@ -1,5 +1,5 @@
-import { TaskEvent } from 'aa-types/events';
-import { TaskStatus } from 'aa-types/enums';
+import { TaskEvent } from '@aa/types/events';
+import { TaskStatus } from '@aa/types/enums';
 
 import { TaskCommand } from './TaskCommand';
 

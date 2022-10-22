@@ -1,5 +1,5 @@
-import { Class, Attributes } from 'aa-types/common';
-import { TaskStatus } from 'aa-types/enums';
+import { Class, Attributes } from '@aa/types/common';
+import { TaskStatus } from '@aa/types/enums';
 
 import { ITaskCrudService } from '@task/domain/task/ITaskCrudService';
 import { TaskCreateData, TaskFindOptions, TaskUpdateData } from '@task/domain/task/types';

@@ -2,7 +2,7 @@ import { Controller, Get, Post, Put, Req, Res, Param, Body, Query } from '@nestj
 import { ApiTags, ApiOkResponse } from '@nestjs/swagger';
 import { Inject } from 'typescript-ioc';
 
-import { LoginForm } from 'aa-types/backend';
+import { LoginForm } from '@aa/types/backend';
 
 import { Public } from '@components/decorators';
 import { LoginUserCommand } from '@user/use-cases/auth';

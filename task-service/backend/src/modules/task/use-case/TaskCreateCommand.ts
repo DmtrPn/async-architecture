@@ -1,4 +1,4 @@
-import { TaskEvent } from 'aa-types/events';
+import { TaskEvent } from '@aa/types/events';
 
 import { TaskCommand } from './TaskCommand';
 

@@ -1,5 +1,5 @@
 import { TransactionManager } from '@common/infrastructure/TransactionManager';
-import { Attributes, Optional } from 'aa-types/common';
+import { Attributes, Optional } from '@aa/types/common';
 
 import { UserModel } from './UserModel';
 import { IUserCrudService } from '@user/domain/user/IUserCrudService';

@@ -52,7 +52,7 @@
     "passport-local": "1.0.0",
     "password-crygen": "1.0.0",
     "pg": "8.7.3",
-    "aa-types": "1.0.0",
+    "@aa/types": "1.0.0",
     "reflect-metadata": "0.1.13",
     "rxjs": "7",
     "source-map-support": "0.5.21",

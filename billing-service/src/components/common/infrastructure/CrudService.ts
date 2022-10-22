@@ -1,6 +1,6 @@
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 
-import { Class, Attributes } from 'aa-types/common';
+import { Class, Attributes } from '@aa/types/common';
 
 import { TransactionManager } from '@common/infrastructure/TransactionManager';
 import { FindCommand } from '@common/infrastructure/FindCommand';

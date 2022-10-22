@@ -1,7 +1,7 @@
 import type * as amqplib from 'amqplib';
 import autobind from 'autobind';
 
-import { Exchange } from 'aa-types/events';
+import { Exchange } from '@aa/types/events';
 
 import { UserEventListener } from '@user/application/event-listener/UserEventListener';
 import { AmqpClient } from './AmqpClient';

@@ -1,0 +1,32 @@
+{
+  "name": "@aa/infrastructure",
+  "version": "1.0.0",
+  "license": "MIT",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build:dev": "yarn clean:dist && yarn lint && ./node_modules/.bin/tsc  --watch",
+    "build": "yarn clean:dist && ./node_modules/.bin/tsc",
+    "clean:dist": "rm -rf dist",
+    "lint": "eslint . --ext .js,.ts ",
+    "lint:fix": "eslint . --ext .js,.ts  --fix"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "@aa/http-error": "1.0.0",
+    "@aa/types": "1.0.0",
+    "@aa/utils": "1.0.0",
+    "@aa/domain": "1.0.0",
+    "eslint": "8.14.0",
+    "eslint-config-airbnb-typescript": "17.0.0",
+    "jest": "27.5.1",
+    "node-dev": "4.0.0",
+    "lodash": "4.17.21",
+    "ts-jest": "27.1.4",
+    "ts-node": "10.7.0",
+    "typeorm": "0.3.4",
+    "typescript": "4.5.5"
+  }
+}

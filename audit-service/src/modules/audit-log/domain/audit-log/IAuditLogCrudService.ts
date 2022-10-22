@@ -1,5 +1,5 @@
-import { Attributes } from 'aa-types/common';
-import { RoleName } from 'aa-types/enums';
+import { Attributes } from '@aa/types/common';
+import { RoleName } from '@aa/types/enums';
 
 import { AuditLogModel } from '../../infrastructure/audit-log/AuditLogModel';
 

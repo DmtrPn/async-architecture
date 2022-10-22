@@ -1,6 +1,6 @@
 import { v4 as uuid } from 'uuid';
 
-import { Exchange, UserEvent } from 'aa-types/events';
+import { Exchange, UserEvent } from '@aa/types/events';
 
 import { AmqpClient, AmqpMetadata } from './AmqpClient';
 

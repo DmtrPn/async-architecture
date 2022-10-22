@@ -1,4 +1,4 @@
-import { Attributes, Optional } from 'aa-types/common';
+import { Attributes, Optional } from '@aa/types/common';
 
 import { UserModel } from '@user/infrastructure/user/UserModel';
 

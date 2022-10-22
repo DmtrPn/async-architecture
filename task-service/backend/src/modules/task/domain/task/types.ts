@@ -1,4 +1,4 @@
-import { TaskStatus } from 'aa-types/enums';
+import { TaskStatus } from '@aa/types/enums';
 import { BaseFindOptions } from '@common/domain/types';
 
 export interface TaskFindOptions extends BaseFindOptions<number> {

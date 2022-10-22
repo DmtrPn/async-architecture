@@ -1,4 +1,4 @@
-import { UserEvent } from 'aa-types/events';
+import { UserEvent } from '@aa/types/events';
 
 import { AmqpMetadata } from '@core/amqp/AmqpClient';
 import { UserUpdateCommand, UserCreateCommand } from '@user/use-cases/user';

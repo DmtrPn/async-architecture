@@ -2,7 +2,7 @@ import type * as amqplib from 'amqplib';
 import autobind from 'autobind';
 
 import { AmqpClient } from './AmqpClient';
-import { Exchange } from '@core/amqp/AmqpPublisherClient';
+import { Exchange } from '@aa/types/events';
 
 interface ConsumerInitData {
 }
@@ -38,7 +38,7 @@ export class AmqpConsumerClient extends AmqpClient<ConsumerInitData> {
 
     @autobind
     private async onMessage(data: amqplib.ConsumeMessage): Promise<void> {
-        const message = this.parseEvent(data.content); // JSON.parse(data.content.toString());
+        const message = this.parseEvent(data.content);
         this.logger.info('receiver: got message', { message });
         await this.onMessage_(message);
         this.channel.ack(data);

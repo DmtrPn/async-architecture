@@ -1,5 +1,5 @@
-import { Attributes } from 'aa-types/common';
-import { RoleName } from 'aa-types/enums';
+import { Attributes } from '@aa/types/common';
+import { RoleName } from '@aa/types/enums';
 
 import { TransactionManager } from '@common/infrastructure/TransactionManager';
 import { IAuditLogCrudService } from '@audit-log/domain/audit-log/IAuditLogCrudService';

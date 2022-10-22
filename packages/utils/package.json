@@ -1,0 +1,28 @@
+{
+  "name": "@aa/utils",
+  "version": "1.0.0",
+  "license": "MIT",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build:dev": "yarn clean:dist && yarn lint && ./node_modules/.bin/tsc  --watch",
+    "build": "yarn clean:dist && ./node_modules/.bin/tsc",
+    "clean:dist": "rm -rf dist",
+    "lint": "eslint . --ext .js,.ts ",
+    "lint:fix": "eslint . --ext .js,.ts  --fix"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "uuid": "8.3.2",
+    "@types/amqplib": "0.8.2",
+    "@typescript-eslint/eslint-plugin": "5.21.0",
+    "@typescript-eslint/parser": "5.21.0",
+    "eslint": "8.14.0",
+    "date-fns": "2.28.0",
+    "lodash": "4.17.21",
+    "eslint-config-airbnb-typescript": "17.0.0",
+    "typescript": "4.5.5"
+  }
+}

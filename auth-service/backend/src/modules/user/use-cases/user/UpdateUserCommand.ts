@@ -1,4 +1,4 @@
-import { UserEvent } from 'aa-types/events';
+import { UserEvent } from '@aa/types/events';
 
 import { RoleName } from '@core/access-control/types';
 

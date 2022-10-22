@@ -1,4 +1,4 @@
-import { TaskEvent, TransactionEvent } from 'aa-types/events';
+import { TaskEvent, TransactionEvent } from '@aa/types/events';
 import { EventSchemaRegistry } from '@aa/event-schema-registry';
 
 import { TaskCommand } from './TaskCommand';

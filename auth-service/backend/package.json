@@ -30,7 +30,7 @@
     "@nestjs/passport": "8.2.1",
     "@nestjs/platform-express": "7.1.3",
     "@nestjs/swagger": "5.2.1",
-    "aa-types": "1.0.0",
+    "@aa/types": "1.0.0",
     "amqp-connection-manager": "4.1.6",
     "amqplib": "0.10.3",
     "autobind": "1.0.3",

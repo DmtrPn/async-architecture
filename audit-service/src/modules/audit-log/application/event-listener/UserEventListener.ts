@@ -1,4 +1,4 @@
-// import { AuditLogEvent } from 'aa-types/events';
+// import { AuditLogEvent } from '@aa/types/events';
 
 import { AmqpMetadata } from '@core/amqp/AmqpClient';
 import { } from '@audit-log/use-cases/audit-log';

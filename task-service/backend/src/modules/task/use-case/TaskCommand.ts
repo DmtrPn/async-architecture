@@ -1,6 +1,6 @@
 import { Inject } from 'typescript-ioc';
 
-import { RoleName } from 'aa-types/enums';
+import { RoleName } from '@aa/types/enums';
 
 import { UseCaseCommand } from '@common/use-cases/UseCaseCommand';
 import { ITaskCrudService } from '@task/domain/task/ITaskCrudService';

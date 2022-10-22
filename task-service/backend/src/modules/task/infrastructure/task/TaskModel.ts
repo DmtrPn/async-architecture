@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryColumn } from 'typeorm';
 
-import { TaskStatus } from 'aa-types/enums';
+import { TaskStatus } from '@aa/types/enums';
 import { BaseModel } from '@common/infrastructure/BaseModel';
 
 @Entity('task')

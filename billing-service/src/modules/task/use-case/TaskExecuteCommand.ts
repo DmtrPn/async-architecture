@@ -1,7 +1,7 @@
 import { v4 as uuid } from 'uuid';
 
-import { TransactionEvent } from 'aa-types/events';
-import { TaskStatus } from 'aa-types/enums';
+import { TransactionEvent } from '@aa/types/events';
+import { TaskStatus } from '@aa/types/enums';
 
 import { TaskCommand } from './TaskCommand';
 
